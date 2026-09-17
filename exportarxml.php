@@ -15,13 +15,11 @@ require_once __DIR__ . "/app/Models/TarefaDAO.php";
 $dao = new TarefaDAO();
 
 
-// ============================
-// PROCESSAR EXPORTAÇÃO
-// ============================
+// exportarxml.php
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Recebe o tipo selecionado
+    // tipo de exportacao, no caso, só tem uma opção, mas poderia ter outras
     $tipo = $_POST["tipo"] ?? "";
 
     // Busca todas as tarefas
@@ -32,40 +30,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     switch ($tipo) {
 
         case "todas":
-
             break;
 
 
         case "concluidas":
-
             $tarefas = array_filter(
                 $tarefas,
                 fn($tarefa) => $tarefa["concluida"] == true
             );
-
             break;
 
 
         case "pendentes":
-
             $tarefas = array_filter(
                 $tarefas,
                 fn($tarefa) => $tarefa["concluida"] == false
             );
-
             break;
 
 
         default:
-
             exit("Tipo de exportação inválido.");
 
     }
 
 
-    // ============================
-    // CRIAR XML
-    // ============================
+    // cria o XML
 
     $oXml = new SimpleXMLElement(
         '<?xml version="1.0" encoding="UTF-8"?><tarefas/>'
@@ -75,13 +65,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     foreach ($tarefas as $tarefa) {
 
         $oTarefa = $oXml->addChild("tarefa");
-
-
         $oTarefa->addChild(
             "id",
             (string) $tarefa["id"]
         );
-
 
         $oTarefa->addChild(
             "titulo",
@@ -93,26 +80,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             "concluida",
             $tarefa["concluida"] ? "1" : "0"
         );
-
     }
 
 
-    // ============================
-    // DOWNLOAD DO XML
-    // ============================
+    // faz o download do XML
 
     $conteudoXml = $oXml->asXML();
 
     ob_clean();
 
     header("Content-Type: application/xml; charset=UTF-8");
-
     header(
     'Content-Disposition: attachment; filename="tarefas.xml"'
     );
 
     echo $conteudoXml;
-
     exit;
 
 }
@@ -123,32 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="views/style.css">
-
-    <title>Exportação XML</title>
-
+    <title>Exportar XML</title>
 </head>
 
 <body>
-
-
-    <h1>Exportação XML</h1>
+    <h1>Exportar XML</h1>
 
 
     
 <form action="exportarxml.php" method="POST">
-
     <div class="linha-exportacao">
-
         <label class="label-exportacao">
-            Selecione o tipo de exportação:
+            Selecione as tarefas que deseja exportar:
         </label>
-
         <label class="radio-exportacao">
             <input
                 type="radio"
@@ -158,13 +130,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             >
             Todas as tarefas
         </label>
-
         <button type="submit">
             Confirmar exportação
         </button>
-
     </div>
-
 </form>
 
 <a href="index.php">
@@ -173,5 +142,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 </body>
-
 </html>

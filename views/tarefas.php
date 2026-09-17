@@ -10,31 +10,7 @@
 
     <title>Lista de Tarefas</title>
 </head>
-
 <body>
-
-    
-
-<nav class="menu-principal">
-
-    <div class="links-menu">
-
-        <a href="exportarxml.php">
-            Exportação XML
-        </a>
-
-        <a href="importarxml.php">
-            Importação XML
-        </a>
-
-    </div>
-
-    <a href="logout.php" class="link-sair">
-        Sair
-    </a>
-
-</nav>
-
 
     <!-- CADASTRO DE TAREFAS -->
     <h1>Nova Tarefa</h1>
@@ -50,31 +26,24 @@
         <button type="submit">
             Cadastrar
         </button>
-
     </form>
 
 
     <p id="mensagem"></p>
 
-
     <!-- LISTAGEM -->
-    <h2>Tarefas</h2>
-
+    <h1>Tarefas</h1>
     <ul id="lista"></ul>
-
-
     <script>
 
         const token = {
             "Authorization": "Bearer qwert"
         };
 
-
         const form = document.getElementById("form");
         const titulo = document.getElementById("titulo");
         const lista = document.getElementById("lista");
         const mensagem = document.getElementById("mensagem");
-
 
         // CARREGAR TAREFAS
         function carregar() {
@@ -82,15 +51,11 @@
             fetch("index.php", {
                 headers: token
             })
-
             .then(r => r.json())
-
             .then(tarefas => {
 
                 lista.innerHTML = "";
-
                 tarefas.forEach(tarefa => {
-
                     lista.innerHTML += `
                         <li>
 
@@ -102,9 +67,7 @@
 
                         </li>
                     `;
-
                 });
-
             })
 
             .catch(() => {
@@ -113,66 +76,61 @@
                     "Erro ao carregar as tarefas.";
 
             });
-
         }
-
 
         // CADASTRAR TAREFA
         form.onsubmit = e => {
-
             e.preventDefault();
-
             fetch("index.php", {
 
                 method: "POST",
-
                 headers: {
                     ...token,
                     "Content-Type": "application/json"
                 },
 
                 body: JSON.stringify({
-
                     titulo: titulo.value
-
                 })
-
             })
 
             .then(r => r.json())
-
             .then(() => {
-
                 titulo.value = "";
-
                 carregar();
-
             });
-
         };
-
 
         // EXCLUIR TAREFA
         function deletar(id) {
-
             fetch(`index.php?id=${id}`, {
-
                 method: "DELETE",
-
                 headers: token
-
             })
-
             .then(() => carregar());
-
         }
-
 
         // INICIAR
         carregar();
-
     </script>
 
+    <nav class="menu-principal">
+    <div class="links-menu">
+        <a href="exportarxml.php">
+            Exportar XML
+        </a>
+        <a href="importarxml.php">
+            Importar XML
+        </a>
+        <a href="phpmailer.php">
+            Enviar XML por E-mail
+        </a>
+
+    </div>
+    <a href="login.php" class="link-sair">
+        Sair
+    </a>
+</nav>
 
     <!-- IMAGEM DOS GURI -->
     <img
@@ -182,5 +140,4 @@
     >
 
 </body>
-
 </html>

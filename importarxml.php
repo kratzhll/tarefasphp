@@ -1,4 +1,3 @@
-
 <?php
 
 session_start();
@@ -16,9 +15,7 @@ $dao = new TarefaDAO();
 $mensagem = "";
 
 
-// ============================
-// PROCESSAR IMPORTAÇÃO
-// ============================
+// importa um arquivo XML e adiciona as tarefas no JSON de acordo com a estrutura do meu xml
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -30,26 +27,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $mensagem = "Selecione um arquivo XML válido.";
 
     } else {
-
         $arquivo = $_FILES["arquivo"]["tmp_name"];
 
         // Carregar XML
         libxml_use_internal_errors(true);
-
         $oXml = simplexml_load_file($arquivo);
 
         if ($oXml === false || $oXml->getName() !== "tarefas") {
-
-            $mensagem = "XML inválido ou estrutura incorreta.";
+            $mensagem = "A estrutura do XML precisa seguir a mesma estrutura do arquivo.xml de exemplo.";
 
         } else {
-
             $tarefasImportadas = [];
 
             foreach ($oXml->tarefa as $tarefa) {
-
                 $titulo = trim((string) $tarefa->titulo);
-
                 if ($titulo === "") {
                     continue;
                 }
@@ -60,31 +51,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                     "concluida" =>
                         ((string) $tarefa->concluida === "1")
-
                 ];
-
             }
 
             if (empty($tarefasImportadas)) {
-
                 $mensagem = "Nenhuma tarefa encontrada no XML.";
-
             } else {
 
-                // Importar para o JSON
+                // passa pro json na minha estrutura
                 $dao->importar($tarefasImportadas);
 
-                // Voltar para a lista de tarefas
+                // volta pra pagina inicial
                 header("Location: index.php");
-
                 exit;
-
             }
-
         }
-
     }
-
 }
 
 ?>
@@ -93,21 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="pt-br">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="views/style.css">
-
     <title>Importação XML</title>
-
 </head>
 
 <body>
-
     <h1>Importação XML</h1>
-
 
     <?php if ($mensagem !== ""): ?>
 
@@ -126,11 +101,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 >
 
     <div class="linha-importacao">
-
         <label class="label-importacao" for="arquivo">
             Selecione o arquivo XML:
         </label>
-
         <input
             type="file"
             id="arquivo"
@@ -142,9 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <button type="submit">
             Importar XML
         </button>
-
     </div>
-
 </form>
 
 <a href="index.php">
@@ -153,5 +124,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 </body>
-
 </html>

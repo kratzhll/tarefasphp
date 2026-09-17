@@ -292,8 +292,8 @@ li button {
 
     .linha-exportacao,
     .linha-importacao {
-        grid-template-columns: 1fr;
-        row-gap: 15px;
+        grid-template-columns: 2fr;
+        row-gap: 25px;
     }
 
     .linha-exportacao button,
