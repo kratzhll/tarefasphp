@@ -1,53 +1,307 @@
+
+/* ============================
+   CONFIGURAÇÕES GERAIS
+============================ */
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: #242323;
-    color: rgb(255, 255, 255);
-    max-width: 600px;
-    margin: 50px auto;
+    color: #ffffff;
+
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-h1, h2 {
-    color: #0051ff;
+/* TÍTULOS */
+
+h1,
+h2 {
+    color: #2196f3;
 }
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 24px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-top: 30px;
+}
+
+/* ============================
+   MENU PRINCIPAL
+============================ */
+
+.menu-principal {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 20px 24px;
+    margin-bottom: 36px;
+
+    background: #17191c;
+    border: 1px solid #353a40;
+    border-radius: 10px;
+}
+
+/* LINKS DO MENU */
+
+.links-menu {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    gap: 28px;
+}
+
+/* LINKS */
+
+.links-menu a {
+    color: #d1d5db;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+
+    white-space: nowrap;
+
+    transition: color 0.2s ease;
+}
+
+.links-menu a:hover {
+    color: #60a5fa;
+}
+
+/* SAIR À DIREITA */
+
+.links-menu .link-sair {
+    color: #f87171;
+    margin-left: auto;
+}
+
+.links-menu .link-sair:hover {
+    color: #fca5a5;
+}
+
+/* ============================
+   FORMULÁRIO DE TAREFAS
+============================ */
 
 form {
     display: flex;
     gap: 10px;
+    width: 100%;
 }
 
 input {
     flex: 1;
-    padding: 10px;
-    border: none;
+
+    padding: 12px;
+
+    border: 1px solid #353a40;
     border-radius: 6px;
+
+    background: #303234;
+    color: #ffffff;
+
+    outline: none;
 }
 
+input:focus {
+    border-color: #2196f3;
+}
+
+input::placeholder {
+    color: #a0a0a0;
+}
+
+/* BOTÕES */
+
 button {
-    padding: 10px 15px;
+    padding: 12px 18px;
+
     border: none;
     border-radius: 6px;
+
     background: #3cff00;
+    color: #111111;
+
     cursor: pointer;
     font-weight: bold;
+
+    transition: background 0.2s ease;
 }
 
 button:hover {
-    transform: scale(1.05);
+    background: #32d900;
+}
+
+/* ============================
+   LISTA DE TAREFAS
+============================ */
+
+ul {
+    padding: 0;
+    list-style: none;
 }
 
 li {
-    background: #a7a7aa;
+    background: #454a4e;
+
     margin: 10px 0;
-    padding: 10px;
+    padding: 12px 14px;
+
     border-radius: 6px;
+
     display: flex;
+    align-items: center;
     justify-content: space-between;
+
+    gap: 15px;
 }
+
+li button {
+    flex-shrink: 0;
+}
+
+/* ============================
+   MENSAGENS
+============================ */
+
+#mensagem {
+    color: #f87171;
+    margin-top: 15px;
+}
+
+/* ============================
+   IMAGEM DOS GURI
+============================ */
 
 .imagem-guri {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0;
+
     width: 50%;
+    max-width: 300px;
+
+    margin: 30px auto 0;
+}
+
+/* ============================
+   EXPORTAÇÃO E IMPORTAÇÃO XML
+============================ */
+
+.linha-exportacao,
+.linha-importacao {
+    display: grid;
+
+    grid-template-columns: 230px minmax(0, 1fr) 170px;
+
+    align-items: center;
+    column-gap: 20px;
+
+    margin: 25px 0;
+}
+
+/* LABELS */
+
+.label-exportacao,
+.label-importacao {
+    width: auto;
+    white-space: normal;
+}
+
+/* RADIO */
+
+.radio-exportacao {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+    white-space: nowrap;
+}
+
+/* INPUT DE ARQUIVO */
+
+.linha-importacao input[type="file"] {
+    width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+}
+
+/* BOTÕES XML */
+
+.linha-exportacao button,
+.linha-importacao button {
+    width: 170px;
+    min-height: 50px;
+
+    padding: 10px;
+    margin: 0;
+
+    white-space: normal;
+}
+
+/* LINKS DE VOLTAR */
+
+.linha-exportacao + a,
+.linha-importacao + a {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* ============================
+   RESPONSIVIDADE
+============================ */
+
+@media (max-width: 700px) {
+
+    body {
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+    .menu-principal {
+        padding: 18px;
+    }
+
+    .links-menu {
+        gap: 18px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form button {
+        width: 100%;
+    }
+
+    .linha-exportacao,
+    .linha-importacao {
+        grid-template-columns: 1fr;
+        row-gap: 15px;
+    }
+
+    .linha-exportacao button,
+    .linha-importacao button {
+        width: 100%;
+    }
+
+    .imagem-guri {
+        width: 70%;
+    }
 }

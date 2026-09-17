@@ -1,3 +1,4 @@
+
 <?php
 
 class TarefaDAO
@@ -17,7 +18,7 @@ class TarefaDAO
         return json_decode($dados, true) ?? [];
     }
 
-    // buscar tarefa por id
+    // BUSCAR TAREFA POR ID
     public function buscarPorId($id)
     {
         $tarefas = $this->listar();
@@ -28,10 +29,11 @@ class TarefaDAO
                 return $tarefa;
             }
         }
+
         return null;
     }
 
-    // add tarefa
+    // ADICIONAR TAREFA
     public function adicionar($tarefa)
     {
         $tarefas = $this->listar();
@@ -49,12 +51,13 @@ class TarefaDAO
         ];
 
         $tarefas[] = $novaTarefa;
+
         $this->salvar($tarefas);
 
         return $novaTarefa;
     }
 
-    // atualizar tarefa
+    // ATUALIZAR TAREFA
     public function atualizar($id, $dados)
     {
         $tarefas = $this->listar();
@@ -72,6 +75,7 @@ class TarefaDAO
                 }
 
                 $this->salvar($tarefas);
+
                 return $tarefas[$indice];
             }
         }
@@ -79,7 +83,7 @@ class TarefaDAO
         return null;
     }
 
-    // excluir tarefa
+    // EXCLUIR TAREFA
     public function excluir($id)
     {
         $tarefas = $this->listar();
@@ -89,7 +93,9 @@ class TarefaDAO
             if ($tarefa["id"] === $id) {
 
                 unset($tarefas[$indice]);
+
                 $tarefas = array_values($tarefas);
+
                 $this->salvar($tarefas);
 
                 return true;
@@ -99,7 +105,40 @@ class TarefaDAO
         return false;
     }
 
-    // salva as tarefas no arq dados.json na pasta persistencia
+    // IMPORTAR TAREFAS DO XML PARA O JSON
+    public function importar(array $tarefasImportadas)
+    {
+        $tarefas = $this->listar();
+
+        $ids = array_column($tarefas, "id");
+
+        $proximoId = empty($ids)
+            ? 1
+            : max($ids) + 1;
+
+        foreach ($tarefasImportadas as $tarefa) {
+
+            $titulo = trim((string) $tarefa["titulo"]);
+
+            if ($titulo === "") {
+                continue;
+            }
+
+            $tarefas[] = [
+                "id" => $proximoId,
+                "titulo" => $titulo,
+                "concluida" => (bool) $tarefa["concluida"]
+            ];
+
+            $proximoId++;
+        }
+
+        $this->salvar($tarefas);
+
+        return true;
+    }
+
+    // SALVAR AS TAREFAS NO DADOS.JSON
     private function salvar($tarefas)
     {
         file_put_contents(
