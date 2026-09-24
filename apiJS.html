@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste de API</title>
+</head>
+<body>
+
+    <h1>Enviar Usuário</h1>
+    <button id="btnEnviar">Enviar</button>
+
+    <script>
+        async function enviarDados(novoUsuario) {
+            try {
+                const resposta = await fetch('https://api.exemplo.com/usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(novoUsuario)
+                });
+
+                if (!resposta.ok) {
+                    throw new Error(`Erro no servidor: ${resposta.status}`);
+                }
+
+                const dadosRetornados = await resposta.json();
+                console.log('Sucesso! Dados criados na API:', dadosRetornados);
+                return dadosRetornados;
+
+            } catch (erro) {
+                console.error('Erro ao enviar dados:', erro);
+            }
+        }
+
+        // Exemplo acionado por botão ou direto:
+        document.getElementById('btnEnviar').addEventListener('click', () => {
+            const usuarioExemplo = {
+                nome: 'Ana Silva',
+                email: 'ana@email.com'
+            };
+            enviarDados(usuarioExemplo);
+        });
+    </script>
+</body>
+</html>
