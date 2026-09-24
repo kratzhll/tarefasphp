@@ -39,7 +39,7 @@
         const lista = document.getElementById("lista");
         const mensagem = document.getElementById("mensagem");
 
-        // CARREGAR TAREFAS (Ajustado para o caminho correcto da raiz)
+        // CARREGAR TAREFAS
         function carregar() {
             fetch("index.php", {
                 headers: token
@@ -138,5 +138,6 @@
         class="imagem-guri"
     >
 
+    <script src="script.js"></script>
 </body>
 </html>

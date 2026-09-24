@@ -105,8 +105,7 @@ class TarefaController
             JSON_UNESCAPED_UNICODE
         );
     }
-
-    // post agora com o dao
+    // post agoracom o dao
     private function adicionar()
     {
         $dados = json_decode(
